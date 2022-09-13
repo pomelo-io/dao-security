@@ -1,5 +1,5 @@
 ## General principles
-The DAO Security (DAOS) project aims to assist EOS developers in meeting code auditors for reviewing the security aspect of their project. 
+The DAO Security (DAOS) project aims to assist EOS developers in reviewing the security aspect of their project. 
 
 Instead of a traditional security firm private audit, the open nature of the audit process allows for better opportunities to discover bugs, vulnerabilites and optimizations. 
 
@@ -30,6 +30,10 @@ From my own experience with the audit process (having participated as a auditor 
 - [-] Reliant on the Github platforms for submitting, storing and processing findings (security implications ? decentralization ?).
 
 ### EOS players
+- [Certik](https://www.certik.com/products/security-audit): « A comprehensive security assessment of your smart contract and blockchain code to identify vulnerabilities and recommend ways to fix them. »
+- [SlowMist](https://www.slowmist.com/): « Focusing on Blockchain Ecosystem Security
+In security, slow is better, better will be more fast »
+- [Sentnl](https://sentnl.io/): « Blockchain Security Audits »
 - [EOS42](https://eos42.io/services/audit): « EOSIO Smart Contract Audits »
 - [ImmuneBytes](https://immunebytes.com/): « A Smart Contract Auditing Solution »
 - [EosAuditor](https://eosauditor.com/): smart contracts security audits (*doesn't seem very professional*)
@@ -52,19 +56,37 @@ Since there isn't currently anything like it in the space, this project could al
 ### Governance system
 Auditors will probably want a say in how the rewards are distributed, how long the audit should take, what's an acceptable submission, etc. 
 
-The system should allow for an (*active?*) auditor to raise questions of interest to the community and/or make voting proposals (*through tokenized system?*).
+The system should allow for an (*active?*) auditor to raise questions of interest to the community and/or make voting proposals.
 
-\[On the topic of the DAO design, need to clarify with Denis before going further\]
-- *Roles and permissions ?*
-- *Funding ?*
-- *Single entity allowing applicants ? Anyone can join ? or more like open contests ?*
+*Roles and permissions ?*
+
+The DAO would be run by a set of **operators** that will be tasked to assess and submit audit requests to the community. They will also be responsible for evaluating the effort provided by community members on an audit as well as release funds and compile a final report to the public.
+
+The rest of the DAO community are the auditors participating in the audit bounty. Anyone would be able to join the effort. A "contribution score" could be used to track members contribution over time (*some privileges?*, *blacklisting some toxic contributors?*).
+
+*Funding ?*
+
+The [Pomelo](https://pomelo.io/) platform would provide funds for setting up the audit bounty. Additionnaly, teams who are requesting an audit would pay a certain fee for sending their request to the DAO.
+
+### Audit process
+
+\[Draft based on Denis' feedback\]
+1. Project/Protocol/Team needs an audit.
+2. It submits a request to DAOS operators who can assess if the request satisfies some minimal audit requirements (documentation, etc.).
+3. DAOS operators initiates a Security Audit bounty request to its community. The duration of the bounty can be variable depending on the estimated amount of work required and/or community members availability and/or other factors. 
+4. DAOS community accepts or rejects (*explictly?*) the audit work.
+5. DAOS operators rate contributions of effort per community member.
+6. DAOS releases audit findings to project/team.
+7. Project/Team approves or disapproves (*how to solve conflict ?*) DAOS' audit work
+8. Funds released to DAOS community based on their contribution efforts.
+9. DAOS releases a final audit report to the public (hosted on IPFS, *with permission?*).
 
 ### Security aspect
 
 *Who would benefit from it ?*
 
 - **EOS developers** getting relieved of the need to review the code themselves and get better insights into how to build secure applications.
-- **Auditors** for getting a chance to build up their skills and eventually make a living out of it.
+- **Auditors** for getting a chance to contribute efforts on collaborative community audit request and receive financial compensation.
 - **Users** for feeling much safer in investing funds or simply interacting with apps in the space.
 
 *What are their requirements ?*
@@ -72,14 +94,23 @@ The system should allow for an (*active?*) auditor to raise questions of interes
 - **Auditors** (*worthy of time, non-toxic environnement, sense of community, scaling to skill level*)
 - **Users** (*transparency, provable work, possibility of rewarding auditors maybe*)
 
-\[On the security aspect\]
-- *Liability, disclosure agreements ?*
-- *Issue of opening source code and open source doctrine in EOS ecosystem ?*
-- *Proving the validity of audits ? Through code ?*
+*Liability, disclosure agreements ?*
+
+\[*Need to dig further into this topic*\]
+
+The DAOS will not assume any responsability for security incidents related to an audited project. Its role is only to report vulnerabilities to the team.
+
+*Issue of opening source code and open source doctrine in EOS ecosystem ?*
+
+Projects would be required to have their source code open to the public. An added benefit is for auditors (and anyone really) to be able to match the audited code to the actual project code.
+
+If the team does not wish to open source their code, they could always turn to other auditing solutions (like the one presented in [EOS players](#EOS-players)).
+
+*Proving the validity of audits ?*
+
+The report produced at the end of the audit process would serve as the validation and legitimacy of the audit. The scope and hashes of the contracts audited would be provided in the report along with all the findings details. A hash would also be provided to identify the specific audit. 
 
 ### Pomelo integration
 The goal would be to integrate this platform to the existing [Pomelo](https://pomelo.io/) initiative.
 
-\[A few questions that needs to be addressed\]
-- *Direct bounties integration ?*
-- *Separate "tab" on the website ?*
+DAOS would be it's own web platform and it would be using Pomelo Bounties for the backend and smart contract capabilities.
