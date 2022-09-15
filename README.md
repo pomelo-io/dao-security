@@ -45,6 +45,51 @@ In security, slow is better, better will be more fast »
 	+ [A Survey on EOSIO Systems Security: Vulnerability, Attack, and Mitigation](https://arxiv.org/pdf/2207.09227.pdf)
 	+ [EOSAFE: Security Analysis of EOSIO Smart Contracts](https://www.usenix.org/system/files/sec21fall-he-ningyu.pdf)
 
+## Related metrics
+
+### EOS
+| Metric | Value |
+| ------ | ----- |
+| Numbers of projects [1] | ~500 |
+| Users [1] | ~425k for the top 25 projects (~500 for Pomelo) |
+| Type of projects [1] | Slightly more Gaming, DeFi, Exchanges |
+| Open-source repos [3] | 670 repos on Github with tag EOS |
+| Total EOS [2] | 1,065,284,439 |
+| Staked EOS [2] | 354,476,937 |
+| Circulating EOS [2] | 710,807,502 |
+| Staked to circulation ratio [2] | 50% |
+
+### WAX
+| Metric | Value |
+| ------ | ----- |
+| Numbers of projects [1] | ~225 |
+| Users [1] | 1.5M+ for the top 25 projects |
+| Type of projects [1] | Almost exclusively Gaming, some Exchanges and miscs |
+| Open-source repos [3] | 50 repos on Github with tag WAX |
+| Total WAX [2] | 3,931,361,230 |
+| Staked WAX [2] | 1,670,258,769 |
+| Circulating WAX [2] | 2,261,102,460 |
+| Staked to circulation ratio [2] | 74% |
+
+### ETH
+| Metric | Value |
+| ------ | ----- |
+| Numbers of projects [1] | ~3500 |
+| Users [1] | ~400k for the top 25 projects |
+| Type of projects [1] | Marketplace, DeFi, Exchanges, miscs  |
+| Open-source repos [3] | 15k+ repos on Github with tag ETHEREUM |
+| Total ETH [4] | 122,370,574 |
+| Staked ETH [5] | 14,441,062 |
+| Circulating ETH [4] | 122,370,574 |
+| Staked to circulation ratio | 12% |
+
+### References
+1. [DappRadar](https://dappradar.com/rankings/protocol/eos)
+2. [Bloks](https://bloks.io/#statistics)
+3. [Github topics](https://github.com/topics/)
+4. [Coinmarketcap](https://coinmarketcap.com/currencies/ethereum/)
+5. [Staking Rewards](https://www.stakingrewards.com/earn/ethereum-2-0/metrics/)
+
 ## Design and architecture
 As a foreword to the design and architecture of a DAO-like system, it should be noted that such an organization requires quite a few individuals to run efficiently and in a way that the *decentralized* nature of the system would not be compromised.
 
@@ -75,7 +120,7 @@ The [Pomelo](https://pomelo.io/) platform would provide funds for setting up the
 1. Project/Protocol/Team needs an audit.
 2. It submits a request to DAOS operators who can assess if the request satisfies some minimal audit requirements (documentation, etc.).
 3. DAOS operators initiates a Security Audit bounty request to its community. The duration of the bounty can be variable depending on the estimated amount of work required and/or community members availability and/or other factors. 
-4. DAOS community accepts or rejects (*explictly?*) the audit work.
+4. DAOS community accepts or rejects (*explicitly?*) the audit work.
 5. DAOS operators rate contributions of effort per community member.
 6. DAOS releases audit findings to project/team.
 7. Project/Team approves or disapproves (*how to solve conflict ?*) DAOS' audit work
@@ -100,6 +145,7 @@ The [Pomelo](https://pomelo.io/) platform would provide funds for setting up the
 \[*Need to dig further into this topic*\]
 
 The DAOS will not assume any responsability for security incidents related to an audited project. Its role is only to report vulnerabilities to the team.
+[Reasonable assurance vs. absolute assurance](https://security.stackexchange.com/questions/166236/are-security-auditors-liable-for-breaches)
 
 *Issue of opening source code and open source doctrine in EOS ecosystem ?*
 
