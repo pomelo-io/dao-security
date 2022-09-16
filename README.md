@@ -41,9 +41,6 @@ In security, slow is better, better will be more fast »
 - [Hacken](https://hacken.io/): « We make web3 a safer place »
 - [Klevoya](https://klevoya.com/): used to provide audit services now acquired by Immunefi
 - [Audit+](https://eosnetwork.com/blog/audit-blue-paper/): « Providing an overall framework for security analysis tooling and contract audit for EOSIO-based applications » (*very insightful, also this project could align with goal #1 and #5 of [blue paper](https://drive.google.com/file/d/1hQsN-_4DN5Lj9iDih0N41r8-ZeEpFRlr/view)*)
-- Papers: 
-	+ [A Survey on EOSIO Systems Security: Vulnerability, Attack, and Mitigation](https://arxiv.org/pdf/2207.09227.pdf)
-	+ [EOSAFE: Security Analysis of EOSIO Smart Contracts](https://www.usenix.org/system/files/sec21fall-he-ningyu.pdf)
 
 ## Related metrics
 
@@ -58,6 +55,8 @@ In security, slow is better, better will be more fast »
 | Staked EOS [2] | 354,476,937 |
 | Circulating EOS [2] | 710,807,502 |
 | Staked to circulation ratio [2] | 50% |
+| Number of smart contracts (15 Nov. 2019) [7] | ~55,000 |
+| Number of recorded attacks on smart contracts (2018-2019) [6] | 113 |
 
 ### WAX
 | Metric | Value |
@@ -82,13 +81,20 @@ In security, slow is better, better will be more fast »
 | Staked ETH [5] | 14,441,062 |
 | Circulating ETH [4] | 122,370,574 |
 | Staked to circulation ratio | 12% |
+| Number of smart contracts (15 Nov. 2019) [10] | ~20M |
+| Number of recorded attacks on smart contracts (Q1-Q2 2022) [8,9] | 113 |
 
 ### References
-1. [DappRadar](https://dappradar.com/rankings/protocol/eos)
-2. [Bloks](https://bloks.io/#statistics)
-3. [Github topics](https://github.com/topics/)
-4. [Coinmarketcap](https://coinmarketcap.com/currencies/ethereum/)
-5. [Staking Rewards](https://www.stakingrewards.com/earn/ethereum-2-0/metrics/)
+1. [Top EOS Dapps. (n.d.). DappRadar. Retrieved September 14, 2022](https://dappradar.com/rankings/protocol/eos)
+2. [Fastest EOS Block Explorer and Wallet. (n.d.). Retrieved September 14, 2022](https://bloks.io/#statistics)
+3. [Build software better, together. (n.d.). GitHub. Retrieved September 14, 2022](https://github.com/topics/)
+4. [Sephton, C. (n.d.). Ethereum price today, ETH to USD live, marketcap and chart. CoinMarketCap. Retrieved September 14, 2022](https://coinmarketcap.com/currencies/ethereum/)
+5. [Ethereum (ETH) Blockchain Metrics & Charts. (n.d.). Staking Rewards. Retrieved September 14, 2022](https://www.stakingrewards.com/earn/ethereum-2-0/metrics/)
+6. [Ningyu He, Haoyu Wang, Lei Wu, Xiapu Luo, Yao Guo, and Xiangqun Chen. 2022. A Survey on EOSIO Systems Security: Vulnerability, Attack, and Mitigation. 1, 1 (July 2022), 34 pages.](https://doi.org/10.1145/nnnnnnn.nnnnnnn)
+7. [He, N., Zhang, R., Wu, L., Wang, H., Luo, X., Guo, Y., ... & Jiang, X. (2020). Security analysis of EOSIO smart contracts. arXiv preprint arXiv:2003.06568.](https://www.usenix.org/system/files/sec21fall-he-ningyu.pdf)
+8. [HACK3D: The Web3 Security Quarterly Report - Q1 2022 - Blog - CertiK Security Leaderboard. (n.d.). Retrieved September 15, 2022](https://4972390.fs1.hubspotusercontent-na1.net/hubfs/4972390/Marketing/Web3%20Security%20Q1%202022.pdf)
+9. [HACK3D: The Web3 Security Quarterly Report - Q2 2022 - Blog - CertiK Security Leaderboard. (n.d.). Retrieved September 15, 2022](https://4972390.fs1.hubspotusercontent-na1.net/hubfs/4972390/Marketing/Web3%20Security%20Q2-2022-v4.pdf)
+10. [Ethereum Smart Contracts Creation. (n.d.). Retrieved September 15, 2022](https://dune.com/queries/649454/1207174)
 
 ## Design and architecture
 As a foreword to the design and architecture of a DAO-like system, it should be noted that such an organization requires quite a few individuals to run efficiently and in a way that the *decentralized* nature of the system would not be compromised.
