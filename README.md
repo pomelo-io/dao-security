@@ -16,12 +16,18 @@
   * [Governance systems](#governance-systems)
     + [Bipartite system (operators/community)](#bipartite-system--operators-community-)
     + [Tripartite system (operators/judges/community)](#tripartite-system--operators-judges-community-)
+    + [Eliminating operators](#eliminating-operators)
+    + [Additional considerations](#additional-considerations)
+    + [References](#references-1)
   * [Reward systems](#reward-systems)
     + [Self judging](#self-judging)
     + [Fully automated judging](#fully-automated-judging)
     + [External expert judging](#external-expert-judging)
     + [Hybrid approach](#hybrid-approach)
+    + [References](#references-2)
   * [Security aspect](#security-aspect)
+- [Technical specifications](#technical-specifications)
+  * [Github as a supporting platform](#github-as-a-supporting-platform)
   * [Pomelo integration](#pomelo-integration)
 
 ## General principles
@@ -32,7 +38,6 @@ Instead of a traditional security firm private audit, the open nature of the aud
 Auditors will be incentivized by the possibilities of growing their skills and being rewarded for working on different projects, while developers will receive a lot more work and insights (thanks to the varied skillset of each individual auditors) than they may get from a traditional audit.
 
 ## Review of existing solutions
-
 *A very good blog post explaining the differences between smart contract auditing approaches: https://thecryptospace.substack.com/p/audit-audit*
 
 ### Bug bounties
@@ -45,11 +50,17 @@ Like in web2, bug bounties platforms have emerged for Web3 projects ([Immunefi](
 - [-] Less visibility as your bug bounty program gets listed with tons of others (with potentially higher rewards) for auditors to choose from.
 
 ### Code4rena
-Code4rena offers "community-driven contests for smart contracts audits" (taken from the [docs](https://docs.code4rena.com/)). 
+[Code4rena](https://code4rena.com) offers "community-driven contests for smart contracts audits" (taken from the [docs](https://docs.code4rena.com/)). As a unique project in the security audit domain, it serves as a base and reference for some of the ideas presented in this document.
 
-It works by setting up a window of several days (usually between 3 and 7) for auditors (called "wardens") to submit their findings, classified as gas optimizations, low, medium or high findings. At the end of the contest, the prize money funded by the project's developers is splitted according to the criticity level of the findings and the amount of people that found it (more details [here](https://docs.code4rena.com/awarding/incentive-model-and-awards) in the docs).
+**Sponsors** first contacts the core team for specifying their need for a codebase security audit of their project. After working out the details (like the prize pot size), the team sets up a time window of several days (usually between 3 and 7) for auditors (called **wardens**) to submit their findings. These findings are classified as either medium or high severity or bundled in one Quality Assurance (QA) report (also containing gas optimizations for Ethereum-based projects). 
 
-See the docs for [Bug bounties vs audit contests](https://docs.code4rena.com/#bug-bounties-vs-c4-audit-contests) and [Traditional audits vs audit contests](https://docs.code4rena.com/#traditional-audits-vs-c4-audit-contests).
+At the end of the contest, the submissions are closed and the contest enters into the judging phase where a **judge** (rarely more than one) will be appointed for evaluating the validity and quality of the findings. For all findings, they will flag duplicates that multiple wardens may have reported as they have no way of knowing if the vulnerability they've found hasn't also be found by others. 
+
+For high and medium severity findings, judges need to assess if the risk is present (high ~= immediate loss of funds, medium ~= potential risk see [Judging criteria](https://docs.code4rena.com/awarding/judging-criteria)) and have the ability to downgrade (or sometime upgrade) a finding based on their judgment. Wardens will then be compensated according to a exponential decay formula taking into account the risk and amount of auditors who found the same vulnerability (see [Incentive model and awards](https://docs.code4rena.com/awarding/incentive-model-and-awards)).
+
+For QA reports, the judge assign a score (between 1-100) based on the quality of the report and auditors will be compensated according to the score of their report using a curve-based mechanism. The top scoring report will also be featured on the final audit publication.
+
+Also see the docs for [Bug bounties vs audit contests](https://docs.code4rena.com/#bug-bounties-vs-c4-audit-contests), [Traditional audits vs audit contests](https://docs.code4rena.com/#traditional-audits-vs-c4-audit-contests) and feel free to explore to learn more about their processes.
 
 From my own experience with the audit process (having participated as an auditor in the [Golom contest](https://code4rena.com/contests/2022-07-golom-contest)):
 - [+] The competition aspect acts as a motivation boost for finding critical vulnerabilites and wanting to "top the charts".
@@ -134,7 +145,6 @@ The goals and mode of operation of the DAO should also be aligned with the needs
 Since there isn't currently anything like it in the space, this project could also be the spark needed for bringing auditors and raising awareness about the security of on-chain EOS contracts.
 
 ### Overview
-
 One thing that started to become very apparent after the first discussions with the team is that **the DAOS project is all about communication**. DAOS acts as the intermediary between *clients* and *auditors* (also known as *the community*).
 
 Clients should not expect DAOS to write code for them, fix infrastructure issues, run pentesting or anything like that. They communicate their need for an audit of a codebase and receive a detailed report highlighting the potential issues found by the community.
@@ -142,8 +152,7 @@ Clients should not expect DAOS to write code for them, fix infrastructure issues
 Auditors receive the code and start working **on their own**, communicating any findings to the DAO as part of the auditing process. In exchange, they get a reward based on their contribution effort to the overall audit. They should not expect anything else but transparency and communication from the DAO. In particular, no specific training, equipement or tools will be provided although how-to resources and beginner-friendly behavior are to be expected.
 
 ### Audit process
-
-Code audit definition: *A software code audit is a comprehensive analysis of source code in a programming project with the intent of discovering bugs, security breaches or violations of programming conventions.* (Wikipedia contributors. (2021, May 23). Code audit. [Wikipedia](https://en.wikipedia.org/wiki/Code_audit). Retrieved September 19, 2022)
+Code audit definition: *A software code audit is a comprehensive analysis of source code in a programming project with the intent of discovering bugs, security breaches or violations of programming conventions.* ([Wikipedia contributors. (2021, May 23). Code audit. Wikipedia. Retrieved September 19, 2022](https://en.wikipedia.org/wiki/Code_audit))
 
 The purpose of auditing a smart contract is to eliminate as much as possible the risks of exploits and unexpected behavior that can occur from errors or overlooked issues in the code. The journey of translating a promising idea into code that runs on a public blockchain can be tedious with lots of pitfalls that developers and newcomers may not be aware of. That's why having a dozen or more pair of eyes look through every aspect of the code is useful for making dapps a safer place for users.
 
@@ -165,44 +174,69 @@ Auditors will be provided the material, *potential reward amount?* and a **deadl
 ### Governance systems
 ~~Auditors will probably want a say in how the rewards are distributed, how long the audit should take, what's an acceptable submission, etc.~~
 
-The system should allow for an (*active?*) auditor to raise questions of interest to the community and/or make voting proposals.
-
 A few possible systems for running the DAO are presented below.
 
 #### Bipartite system (operators/community)
-
 The DAO would be run by a set of **operators** that will be tasked to assess and submit audit requests to the community. They will also be responsible for evaluating the effort provided by community members on an audit as well as release funds and compile a final report to the public.
+
+Initially, the founders of the DAO would act as the de-facto trusted operators. These are people who have the vision for the project and who are willing to put the best effort for running and growing the DAO's operations. In the future, active and well-established members of the community could be able to apply for working as an operator (*community vote?*). 
 
 The rest of the DAO community are the auditors participating in the audit bounty. Anyone would be able to join the effort. A "contribution score" could be used to track members contribution over time (*some privileges?*, *blacklisting some toxic contributors?*).
 
 #### Tripartite system (operators/judges/community)
+In the tripartite system, **operators** acts the same way as in the bipartite system except for the part that they no longer evaluate directly the submissions of auditors.
 
-Similar to [Code4rena](#code4rena)'s approach, separating the operational process of running the DAO and judging contests' submissions could allow for a more efficient system.
+Instead, similar to [Code4rena](#code4rena)'s approach, we separate the operational process of running the DAO and the judging of contests' submissions. **Judges** are the ones that are tasked with determining the individual effort provided by each auditor for a specific audit. They are highly-skilled members of the community (although they can't participate in *any?* audits themselves) who will use their background, judgement and knowledge of the rules (*judging rules used as a reference for judges*) to perform this task.
 
-\[*WIP to expand further*\]
+Judges would be ultimately appointed by operators with the community and other judges being able to recommend people they think would be a great fit. In any case, judges will require to justify from a certain level of experience and audit performance in the DAO (*passing test required?*) prior to being recruited.
+
+#### Eliminating operators
+In theory, it would be possible to remove the operator's role entierly:
+- Pipelining and automating the whole process from the client's audit proposal to the final report compilation from the auditor's submissions.
+- Using smart contracts for the storage, distribution and sending of audit rewards.
+- Automating the communication channels setup with eventuals human-support roles for complex interactions.
+
+Decisions requiring judgment such as resolving conflicts or approving a client's audit proposal would be submitted to the community for approval. A reputation-based system would be best suited for weighing each individual opinion that would ultimately decide on the outcome of the decision (see [1] and [2]).
+
+The process of eliminating operators from the system could be the long-term goal of the DAO governance, ensuring that community members working for the best of the organization would be the one that have the most influence on the decisions taken (which should be the case for operators but there is a higher risk of collusion with such a small group of people).
+
+#### Additional considerations
+According to [3], one of the main components that differentiates a **D**ecentralized **A**utonomous **O**rganisation (DAO) from just a **D**ecentralized **A**pplication (DA) is *internal capital*. For DAOS, that would be the treasury used to reward auditors (and potentially others) for their work. Hence, mechanisms (such as multi-sig and more) need to be put in place for ensuring the safety and integrity of this internal capital or else the entire DAO structure would be at risk.
+
+The word *Autonomous* is also a key part that caracterize a DAO as opposed to a simpler **D**ecentralized **O**rganisation (DO). There need to be some part of the system that is not prone to human decisions only, running the risk of collusion or malicious exploits of the DAO structure. Rules are one way of enforcing more autonomous evaluations, with invalid or fraudulent submissions/reports exposed to being flagged and rejected (either automatically or manually).
+
+~~The system should allow for an (*active?*) auditor to raise questions of interest to the community and/or make voting proposals.~~
+
+#### References
+1. [Moving beyond coin voting governance. (2021, August 16). Retrieved September 21, 2022](https://vitalik.ca/general/2021/08/16/voting3.html)
+2. [Levi, A. (2021, December 9). Reputation vs Tokens - DAOstack. Medium. Retrieved September 23, 2022](https://medium.com/daostack/reputation-vs-tokens-6d7642c7a538)
+3. [Buterin, V. (2014, May 6). DAOs, DACs, DAs and More: An Incomplete Terminology Guide. Ethereum Foundation Blog. Retrieved September 21, 2022](https://blog.ethereum.org/2014/05/06/daos-dacs-das-and-more-an-incomplete-terminology-guide)
 
 ### Reward systems
-
 One of the hardest part of setting up a DAO structure for conducting security audits is the attribution of rewards based on the individual efforts of each community member towards a particular audit. In a traditional audit firm, salaries (and potentially bonuses) are what incentivize auditors to perform to the best of their ability.
 
-With people coming in-and-out of the audit process, from various backgrounds, skill levels and with different abilities to communicate effectively, another system must be put in place.
+With people coming in-and-out of the audit process, from various backgrounds, skill levels and with different abilities to communicate effectively, another system must be put in place that shall be fair and rewarding for all these people.
 
 *What are we measuring exactly ?*
+- Resources spent: time, reports length and details
+- Attributable results: number of valid findings, criticity, CPU/RAM optimization
 
 #### Self judging
 
 #### Fully automated judging
 
 #### External expert judging
-
 Using well-versed, recognized experts in the auditing field for judging the quality of auditors' submissions is one way of ensuring a fair distribution of rewards.
 
 #### Hybrid approach
 
 \[*WIP to expand further*\]
 
-### Security aspect
+#### References
+1. https://www.sciencedirect.com/science/article/pii/S146290111731273X
+2. https://en.wikipedia.org/wiki/Fair_division_of_a_single_homogeneous_resource
 
+### Security aspect
 *Who would benefit from it ?*
 
 - **EOS developers** getting relieved of the need to review the code themselves and get better insights into how to build secure applications.
@@ -231,6 +265,16 @@ If the team does not wish to open source their code, they could always turn to o
 *Proving the validity of audits ?*
 
 The report produced at the end of the audit process would serve as the validation and legitimacy of the audit. The scope and hashes of the contracts audited would be provided in the report along with all the findings details. A hash would also be provided to identify the specific audit. 
+
+## Technical specifications
+This section goes deeper into the technical aspect of running the DAO (platforms, backend, frontend, etc.).
+
+### Github as a supporting platform
+Since the DAO Security project is all about communication (as stated in the [overview](#overview)), a good case could be made for just using the storage, reporting and communication abilities of Github for running the whole operations of the DAO.
+
+A repo containing the audited code would be created and auditors submissions would be processed as issues that could be discussed and resolved on the platform signifying the validity of the finding (and the award that goes with it). This system is what [Code4rena](#code4rena) uses for powering its own audit platform.
+
+\[*More advantages/drawbacks*\]
 
 ### Pomelo integration
 The goal would be to integrate this platform to the existing [Pomelo](https://pomelo.io/) initiative.
