@@ -20,10 +20,8 @@
     + [Additional considerations](#additional-considerations)
     + [References](#references-1)
   * [Reward systems](#reward-systems)
-    + [Self judging](#self-judging)
-    + [Fully automated judging](#fully-automated-judging)
-    + [External expert judging](#external-expert-judging)
-    + [Hybrid approach](#hybrid-approach)
+    + [Assessing the quality of submissions](#assessing-the-quality-of-submissions)
+    + [Mathematical approach for the distribution of rewards](#mathematical-approach-for-the-distribution-of-rewards)
     + [References](#references-2)
   * [Security aspect](#security-aspect)
 - [Technical specifications](#technical-specifications)
@@ -217,24 +215,37 @@ One of the hardest part of setting up a DAO structure for conducting security au
 
 With people coming in-and-out of the audit process, from various backgrounds, skill levels and with different abilities to communicate effectively, another system must be put in place that shall be fair and rewarding for all these people.
 
+#### Assessing the quality of submissions
+Ultimately, the reward system for compensating the community's work would be based on assessing the **validity** (as in reproducible, attestable, real) and the **quality** (as in documented, testable, well-described) of submissions. Several methods can be explored for achieving this task:
+
+- *Self judging*: auditors will be tasked to rate their peers' submissions (*possibly their own?*) on a reference scale. Algorthms (such as the ones presented on the [Spliddit](http://www.spliddit.org/) website) could then be used to adjust the scores that would later on decide on the rewards attributed. Note that this system is the **least scalable** of all.
+- *Fully automated judging*: given a submission as input, a program will analyze the text and metadata to extract informations that, based on his knowledge of rules and best practices (length, language used, presence of Proof-Of-Concept code, etc.), will be used to attribute a validity result and a quality score. This method is the **most susceptible to exploits and "drama"** towards contributions' evaluations.
+- *External expert judging*: using well-versed, recognized experts in the auditing field for judging the quality of auditors' submissions is one way of ensuring a fair distribution of rewards.
+- *Hybrid approach*:
+
 *What are we measuring exactly ?*
+
+The judging process being mostly subjective, in case be useful to offer some general direction and references for assisting judges in their assessments. Objective metrics can be effective for a quick first sort of submissions' quality. But finding good metrics for measuring work effort can be tricky. A few options are presented here (based on [1]): 
 - Resources spent: time, reports length and details
-- Attributable results: number of valid findings, criticity, CPU/RAM optimization
+- Attributable results: number of valid findings, criticity, CPU/RAM optimization for EOS smart contracts
 
-#### Self judging
+#### Mathematical approach for the distribution of rewards
+The litterature has been quite prolific since the 1940's towards creating and solving *fair division [2]* problems using game theory models. Of particular interest to the DAOS project is the subject of *fair division of a single homogeneous resource [3]* (where only the amount matters... like money!) and the concepts of *welfarism* and *social welfare orderings* [4]. They offer great insights towards creating a fair reward distribution system in the context of subjective evaluations.
 
-#### Fully automated judging
+*Formulating the problem*
+Given a **set** of contributions (described with their own *criticity level*, *properties* – like length and details – and *subjective quality* asserted by an external party) for each participants, how can the **common resource** (money) be allocated in a fair way, rewarding the **maximum utility** (quality) as perceived by the client ?
 
-#### External expert judging
-Using well-versed, recognized experts in the auditing field for judging the quality of auditors' submissions is one way of ensuring a fair distribution of rewards.
+The main goal would be to shape a concave *utility function* with money as input and the utility (quality of report) as output for each auditor. 
 
-#### Hybrid approach
+![Theoretical utility function for reward distribution](utility_function.svg)
 
-\[*WIP to expand further*\]
+The greater reward an auditor receives, the more efforts are going to be put in producing high quality submissions **up until a certain point**. Indeed, too much rewards will incentivize the production of *more* reports (hence less effort on each of them) and an overall **decrease** in the utility (quality) of submissions. 
 
 #### References
-1. https://www.sciencedirect.com/science/article/pii/S146290111731273X
-2. https://en.wikipedia.org/wiki/Fair_division_of_a_single_homogeneous_resource
+1. [Maag, S., Alexander, T. J., Kase, R., & Hoffmann, S. (2018, November). Indicators for measuring the contributions of individual knowledge brokers. Environmental Science & Policy, 89, 1–9.](https://doi.org/10.1016/j.envsci.2018.06.002)
+2. [Wikipedia contributors. (2022, March 3). Fair division. Wikipedia. Retrieved September 24, 2022](https://en.wikipedia.org/wiki/Fair_division)
+3. [Wikipedia contributors. (2021b, December 27). Fair division of a single homogeneous resource. Wikipedia. Retrieved September 24, 2022](https://en.wikipedia.org/wiki/Fair_division_of_a_single_homogeneous_resource)
+4. [Moulin, H. (2004, August 20). Fair Division and Collective Welfare (The MIT Press) (New Ed). The MIT Press.](https://www.google.ca/books/edition/Fair_Division_and_Collective_Welfare/kjoiEAAAQBAJ)
 
 ### Security aspect
 *Who would benefit from it ?*
