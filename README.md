@@ -9,8 +9,7 @@
   * [EOS](#eos)
   * [WAX](#wax)
   * [ETH](#eth)
-  * [References](#references)
-- [Design and architecture](#design-and-architecture)
+- [Design and architecture discussion](#design-and-architecture-discussion)
   * [Overview](#overview)
   * [Audit process](#audit-process)
   * [Governance systems](#governance-systems)
@@ -18,22 +17,31 @@
     + [Tripartite system (operators/judges/community)](#tripartite-system--operators-judges-community-)
     + [Eliminating operators](#eliminating-operators)
     + [Additional considerations](#additional-considerations)
-    + [References](#references-1)
   * [Reward systems](#reward-systems)
     + [Assessing the quality of submissions](#assessing-the-quality-of-submissions)
     + [Mathematical approach for the distribution of rewards](#mathematical-approach-for-the-distribution-of-rewards)
-    + [References](#references-2)
   * [Security aspect](#security-aspect)
-- [Technical specifications](#technical-specifications)
+- [Technical considerations](#technical-considerations)
   * [Github as a supporting platform](#github-as-a-supporting-platform)
   * [Pomelo integration](#pomelo-integration)
+- [References](#references)
 
 ## General principles
 The DAO Security (DAOS) project aims to assist EOS developers in reviewing the security aspect of their project. 
 
-Instead of a traditional security firm private audit, the open nature of the audit process allows for better opportunities to discover bugs, vulnerabilites and optimizations. 
+Instead of a traditional security firm private audit, the open nature of the [audit process](#audit-process) allows for better opportunities to discover bugs, vulnerabilites and optimizations. 
 
 Auditors will be incentivized by the possibilities of growing their skills and being rewarded for working on different projects, while developers will receive a lot more work and insights (thanks to the varied skillset of each individual auditors) than they may get from a traditional audit.
+
+*Who would benefit from it ?*
+- **EOS developers** getting relieved of the need to review the code themselves and get better insights into how to build secure applications.
+- **Auditors** for getting a chance to contribute efforts on collaborative community audit request and receive financial compensation.
+- **Users** for feeling much safer in investing funds or simply interacting with apps in the space.
+
+*What are their requirements ?*
+- **EOS developers** (*cost-effectiveness, support, value through skilled auditors*)
+- **Auditors** (*worthy of time, non-toxic environnement, sense of community, scaling to skill level*)
+- **Users** (*transparency, provable work, possibility of rewarding auditors?*)
 
 ## Review of existing solutions
 *A very good blog post explaining the differences between smart contract auditing approaches: https://thecryptospace.substack.com/p/audit-audit*
@@ -50,13 +58,15 @@ Like in web2, bug bounties platforms have emerged for Web3 projects ([Immunefi](
 ### Code4rena
 [Code4rena](https://code4rena.com) offers "community-driven contests for smart contracts audits" (taken from the [docs](https://docs.code4rena.com/)). As a unique project in the security audit domain, it serves as a base and reference for some of the ideas presented in this document.
 
-**Sponsors** first contacts the core team for specifying their need for a codebase security audit of their project. After working out the details (like the prize pot size), the team sets up a time window of several days (usually between 3 and 7) for auditors (called **wardens**) to submit their findings. These findings are classified as either medium or high severity or bundled in one Quality Assurance (QA) report (also containing gas optimizations for Ethereum-based projects). 
+**Sponsors** first contacts the core team for specifying their need for a codebase security audit of their project. After working out the details (like the prize pot size), the team sets up a time window of several days (usually between 3 and 7) for auditors (called **wardens**) to submit their findings. These findings are classified as either medium or high severity or bundled in one Quality Assurance (QA) report (also containing gas optimizations for Ethereum-based projects).
 
 At the end of the contest, the submissions are closed and the contest enters into the judging phase where a **judge** (rarely more than one) will be appointed for evaluating the validity and quality of the findings. For all findings, they will flag duplicates that multiple wardens may have reported as they have no way of knowing if the vulnerability they've found hasn't also be found by others. 
 
 For high and medium severity findings, judges need to assess if the risk is present (high ~= immediate loss of funds, medium ~= potential risk see [Judging criteria](https://docs.code4rena.com/awarding/judging-criteria)) and have the ability to downgrade (or sometime upgrade) a finding based on their judgment. Wardens will then be compensated according to a exponential decay formula taking into account the risk and amount of auditors who found the same vulnerability (see [Incentive model and awards](https://docs.code4rena.com/awarding/incentive-model-and-awards)).
 
 For QA reports, the judge assign a score (between 1-100) based on the quality of the report and auditors will be compensated according to the score of their report using a curve-based mechanism. The top scoring report will also be featured on the final audit publication.
+
+It's worth noting that Code4rena allow for wardens to form **teams** and sends their findings under one common name. Rewards will be attributed to that particular team who can then split it however it wants between its members. Teams must be created and approved by the Code4rena staff prior to the start of a contest.
 
 Also see the docs for [Bug bounties vs audit contests](https://docs.code4rena.com/#bug-bounties-vs-c4-audit-contests), [Traditional audits vs audit contests](https://docs.code4rena.com/#traditional-audits-vs-c4-audit-contests) and feel free to explore to learn more about their processes.
 
@@ -80,60 +90,47 @@ In security, slow is better, better will be more fast »
 - [Audit+](https://eosnetwork.com/blog/audit-blue-paper/): « Providing an overall framework for security analysis tooling and contract audit for EOSIO-based applications » (*very insightful, also this project could align with goal #1 and #5 of [blue paper](https://drive.google.com/file/d/1hQsN-_4DN5Lj9iDih0N41r8-ZeEpFRlr/view)*)
 
 ## Related metrics for context
-
 ### EOS
 | Metric | Value |
 | ------ | ----- |
-| Numbers of projects [1] | ~500 |
-| Users [1] | ~425k for the top 25 projects (~500 for Pomelo) |
-| Type of projects [1] | Slightly more Gaming, DeFi, Exchanges |
-| Open-source repos [3] | 670 repos on Github with tag EOS |
-| Total EOS [2] | 1,065,284,439 |
-| Staked EOS [2] | 354,476,937 |
-| Circulating EOS [2] | 710,807,502 |
-| Staked to circulation ratio [2] | 50% |
-| Number of smart contracts (15 Nov. 2019) [7] | ~55,000 |
-| Number of recorded attacks on smart contracts (2018-2019) [6] | 113 |
+| Numbers of projects [[1]](#user-content-#1) | ~500 |
+| Users [[1]](#user-content-#1) | ~425k for the top 25 projects (~500 for Pomelo) |
+| Type of projects [[1]](#user-content-#1) | Slightly more Gaming, DeFi, Exchanges |
+| Open-source repos [[3]](#user-content-#3) | 670 repos on Github with tag EOS |
+| Total EOS [[2]](#user-content-#2) | 1,065,284,439 |
+| Staked EOS [[2]](#user-content-#2) | 354,476,937 |
+| Circulating EOS [[2]](#user-content-#2) | 710,807,502 |
+| Staked to circulation ratio [[2]](#user-content-#2) | 50% |
+| Number of smart contracts (15 Nov. 2019) [[7]](#user-content-#7) | ~55,000 |
+| Number of recorded attacks on smart contracts (2018-2019) [[6]](#user-content-#6) | 113 |
 
 ### WAX
 | Metric | Value |
 | ------ | ----- |
-| Numbers of projects [1] | ~225 |
-| Users [1] | 1.5M+ for the top 25 projects |
-| Type of projects [1] | Almost exclusively Gaming, some Exchanges and miscs |
-| Open-source repos [3] | 50 repos on Github with tag WAX |
-| Total WAX [2] | 3,931,361,230 |
-| Staked WAX [2] | 1,670,258,769 |
-| Circulating WAX [2] | 2,261,102,460 |
-| Staked to circulation ratio [2] | 74% |
+| Numbers of projects [[1]](#user-content-#1) | ~225 |
+| Users [[1]](#user-content-#1) | 1.5M+ for the top 25 projects |
+| Type of projects [[1]](#user-content-#1) | Almost exclusively Gaming, some Exchanges and miscs |
+| Open-source repos [[3]](#user-content-#3) | 50 repos on Github with tag WAX |
+| Total WAX [[2]](#user-content-#2) | 3,931,361,230 |
+| Staked WAX [[2]](#user-content-#2) | 1,670,258,769 |
+| Circulating WAX [[2]](#user-content-#2) | 2,261,102,460 |
+| Staked to circulation ratio [[2]](#user-content-#2) | 74% |
 
 ### ETH
 | Metric | Value |
 | ------ | ----- |
-| Numbers of projects [1] | ~3500 |
-| Users [1] | ~400k for the top 25 projects |
-| Type of projects [1] | Marketplace, DeFi, Exchanges, miscs  |
-| Open-source repos [3] | 15k+ repos on Github with tag ETHEREUM |
-| Total ETH [4] | 122,370,574 |
-| Staked ETH [5] | 14,441,062 |
-| Circulating ETH [4] | 122,370,574 |
+| Numbers of projects [[1]](#user-content-#1) | ~3500 |
+| Users [[1]](#user-content-#1) | ~400k for the top 25 projects |
+| Type of projects [[1]](#user-content-#1) | Marketplace, DeFi, Exchanges, miscs  |
+| Open-source repos [[3]](#user-content-#3) | 15k+ repos on Github with tag ETHEREUM |
+| Total ETH [[4]](#user-content-#4) | 122,370,574 |
+| Staked ETH [[5]](#user-content-#5) | 14,441,062 |
+| Circulating ETH [[4]](#user-content-#4) | 122,370,574 |
 | Staked to circulation ratio | 12% |
-| Number of smart contracts (15 Nov. 2019) [10] | ~20M |
-| Number of recorded attacks on smart contracts (Q1-Q2 2022) [8,9] | 113 |
+| Number of smart contracts (15 Nov. 2019) [[10]](#user-content-#10) | ~20M |
+| Number of recorded attacks on smart contracts (Q1-Q2 2022) [[8]](#user-content-#8) [[9]](#user-content-#9) | 113 |
 
-### References
-1. [Top EOS Dapps. (n.d.). DappRadar. Retrieved September 14, 2022](https://dappradar.com/rankings/protocol/eos)
-2. [Fastest EOS Block Explorer and Wallet. (n.d.). Retrieved September 14, 2022](https://bloks.io/#statistics)
-3. [Build software better, together. (n.d.). GitHub. Retrieved September 14, 2022](https://github.com/topics/)
-4. [Sephton, C. (n.d.). Ethereum price today, ETH to USD live, marketcap and chart. CoinMarketCap. Retrieved September 14, 2022](https://coinmarketcap.com/currencies/ethereum/)
-5. [Ethereum (ETH) Blockchain Metrics & Charts. (n.d.). Staking Rewards. Retrieved September 14, 2022](https://www.stakingrewards.com/earn/ethereum-2-0/metrics/)
-6. [Ningyu He, Haoyu Wang, Lei Wu, Xiapu Luo, Yao Guo, and Xiangqun Chen. 2022. A Survey on EOSIO Systems Security: Vulnerability, Attack, and Mitigation. 1, 1 (July 2022), 34 pages.](https://doi.org/10.1145/nnnnnnn.nnnnnnn)
-7. [He, N., Zhang, R., Wu, L., Wang, H., Luo, X., Guo, Y., ... & Jiang, X. (2020). Security analysis of EOSIO smart contracts. arXiv preprint arXiv:2003.06568.](https://www.usenix.org/system/files/sec21fall-he-ningyu.pdf)
-8. [HACK3D: The Web3 Security Quarterly Report - Q1 2022 - Blog - CertiK Security Leaderboard. (n.d.). Retrieved September 15, 2022](https://4972390.fs1.hubspotusercontent-na1.net/hubfs/4972390/Marketing/Web3%20Security%20Q1%202022.pdf)
-9. [HACK3D: The Web3 Security Quarterly Report - Q2 2022 - Blog - CertiK Security Leaderboard. (n.d.). Retrieved September 15, 2022](https://4972390.fs1.hubspotusercontent-na1.net/hubfs/4972390/Marketing/Web3%20Security%20Q2-2022-v4.pdf)
-10. [Ethereum Smart Contracts Creation. (n.d.). Retrieved September 15, 2022](https://dune.com/queries/649454/1207174)
-
-## Design and architecture
+## Design and architecture discussion
 As a foreword to the design and architecture of a DAO-like system, it should be noted that such an organization requires quite a few individuals to run efficiently and in a way that the *decentralized* nature of the system would not be compromised.
 
 ~~As such, it would be best to first assess if the EOS ecosystem is capable of supporting a security-focused community of developers and auditors before launching any big project towards the creation of a DAO.~~ (*don't worry about this part*)
@@ -194,21 +191,18 @@ In theory, it would be possible to remove the operator's role entierly:
 - Using smart contracts for the storage, distribution and sending of audit rewards.
 - Automating the communication channels setup with eventuals human-support roles for complex interactions.
 
-Decisions requiring judgment such as resolving conflicts or approving a client's audit proposal would be submitted to the community for approval. A reputation-based system would be best suited for weighing each individual opinion that would ultimately decide on the outcome of the decision (see [1] and [2]).
+Decisions requiring judgment such as resolving conflicts or approving a client's audit proposal would be submitted to the community for approval. A reputation-based system would be best suited for weighing each individual opinion that would ultimately decide on the outcome of the decision (see [[11]](#user-content-#11) and [[12]](#user-content-#12)).
 
 The process of eliminating operators from the system could be the long-term goal of the DAO governance, ensuring that community members working for the best of the organization would be the one that have the most influence on the decisions taken (which should be the case for operators but there is a higher risk of collusion with such a small group of people).
 
+*Add section about "4.3 Voting over Resource Allocation" and scoring methods in [[17]](#user-content-#17)*
+
 #### Additional considerations
-According to [3], one of the main components that differentiates a **D**ecentralized **A**utonomous **O**rganisation (DAO) from just a **D**ecentralized **A**pplication (DA) is *internal capital*. For DAOS, that would be the treasury used to reward auditors (and potentially others) for their work. Hence, mechanisms (such as multi-sig and more) need to be put in place for ensuring the safety and integrity of this internal capital or else the entire DAO structure would be at risk.
+According to [[13]](#user-content-#13), one of the main components that differentiates a **D**ecentralized **A**utonomous **O**rganisation (DAO) from just a **D**ecentralized **A**pplication (DA) is *internal capital*. For DAOS, that would be the treasury used to reward auditors (and potentially others) for their work. Hence, mechanisms (such as multi-sig and more) need to be put in place for ensuring the safety and integrity of this internal capital or else the entire DAO structure would be at risk.
 
 The word *Autonomous* is also a key part that caracterize a DAO as opposed to a simpler **D**ecentralized **O**rganisation (DO). There need to be some part of the system that is not prone to human decisions only, running the risk of collusion or malicious exploits of the DAO structure. Rules are one way of enforcing more autonomous evaluations, with invalid or fraudulent submissions/reports exposed to being flagged and rejected (either automatically or manually).
 
 ~~The system should allow for an (*active?*) auditor to raise questions of interest to the community and/or make voting proposals.~~
-
-#### References
-1. [Moving beyond coin voting governance. (2021, August 16). Retrieved September 21, 2022](https://vitalik.ca/general/2021/08/16/voting3.html)
-2. [Levi, A. (2021, December 9). Reputation vs Tokens - DAOstack. Medium. Retrieved September 23, 2022](https://medium.com/daostack/reputation-vs-tokens-6d7642c7a538)
-3. [Buterin, V. (2014, May 6). DAOs, DACs, DAs and More: An Incomplete Terminology Guide. Ethereum Foundation Blog. Retrieved September 21, 2022](https://blog.ethereum.org/2014/05/06/daos-dacs-das-and-more-an-incomplete-terminology-guide)
 
 ### Reward systems
 One of the hardest part of setting up a DAO structure for conducting security audits is the attribution of rewards based on the individual efforts of each community member towards a particular audit. In a traditional audit firm, salaries (and potentially bonuses) are what incentivize auditors to perform to the best of their ability.
@@ -218,47 +212,35 @@ With people coming in-and-out of the audit process, from various backgrounds, sk
 #### Assessing the quality of submissions
 Ultimately, the reward system for compensating the community's work would be based on assessing the **validity** (as in reproducible, attestable, real) and the **quality** (as in documented, testable, well-described) of submissions. Several methods can be explored for achieving this task:
 
-- *Self judging*: auditors will be tasked to rate their peers' submissions (*possibly their own?*) on a reference scale. Algorthms (such as the ones presented on the [Spliddit](http://www.spliddit.org/) website) could then be used to adjust the scores that would later on decide on the rewards attributed. Note that this system is the **least scalable** of all.
+- *Self judging*: auditors will be tasked to rate their peers' submissions (*possibly their own?*) on a reference scale. Algorithms (such as the ones presented on the [Spliddit](http://www.spliddit.org/) website) could then be used to adjust the scores that would later on decide on the rewards attributed. Note that this system is the **least scalable** of all.
 - *Fully automated judging*: given a submission as input, a program will analyze the text and metadata to extract informations that, based on his knowledge of rules and best practices (length, language used, presence of Proof-Of-Concept code, etc.), will be used to attribute a validity result and a quality score. This method is the **most susceptible to exploits and "drama"** towards contributions' evaluations.
 - *External expert judging*: using well-versed, recognized experts in the auditing field for judging the quality of auditors' submissions is one way of ensuring a fair distribution of rewards.
-- *Hybrid approach*:
+- *Hybrid approach*: by combining some of the afformentioned approaches, it's possible to imagine a system where the easiest and repetitive tasks (such as flagging duplicate submissions) would be processed automatically or, at least, triaged. Human-judging would then be focused on validating and estimating the criticity and quality of the findings.
+
+In any case, the client would also be involved in this process being able to recognize potential failures or missed vulnerabilites within its own product. Although for the same reasons, the client might not be enclined to acknowledge these findings since the report will be open to the public afterwards (self-esteem, pride, etc.). Hence, the final decision concerning the classification of a submission should be taken by the people responsible from the DAOS's side of things.
 
 *What are we measuring exactly ?*
 
-The judging process being mostly subjective, in case be useful to offer some general direction and references for assisting judges in their assessments. Objective metrics can be effective for a quick first sort of submissions' quality. But finding good metrics for measuring work effort can be tricky. A few options are presented here (based on [1]): 
+The judging process being mostly subjective, in case be useful to offer some general direction and references for assisting judges in their assessments. Objective metrics can be effective for a quick first sort of submissions' quality. But finding good metrics for measuring work effort can be tricky. A few options are presented here (based on [[14]](#user-content-#14)): 
 - Resources spent: time, reports length and details
 - Attributable results: number of valid findings, criticity, CPU/RAM optimization for EOS smart contracts
 
 #### Mathematical approach for the distribution of rewards
-The litterature has been quite prolific since the 1940's towards creating and solving *fair division [2]* problems using game theory models. Of particular interest to the DAOS project is the subject of *fair division of a single homogeneous resource [3]* (where only the amount matters... like money!) and the concepts of *welfarism* and *social welfare orderings* [4]. They offer great insights towards creating a fair reward distribution system in the context of subjective evaluations.
+The litterature has been quite prolific since the 1940's towards creating and solving *fair division [[15]](#user-content-#15)* problems using game theory models. Of particular interest to the DAOS project is the subject of *fair division of a single homogeneous resource [[16]](#user-content-#16)* (where only the amount matters... like money!), the concepts of *welfarism*, *social welfare orderings* and "*the problem of the commons*" among others [[17]](#user-content-#17). They offer great insights towards creating a fair reward distribution system in the context of subjective evaluations.
 
 *Formulating the problem*
-Given a **set** of contributions (described with their own *criticity level*, *properties* – like length and details – and *subjective quality* asserted by an external party) for each participants, how can the **common resource** (money) be allocated in a fair way, rewarding the **maximum utility** (quality) as perceived by the client ?
+
+Given a **set** of contributions (described with their own *criticity level*, *properties* – like length and details – and *subjective quality*) for each participants, how can the **common resource** (money) be allocated in a fair way, rewarding the **maximum utility** (quality) as perceived by the client ?
 
 The main goal would be to shape a concave *utility function* with money as input and the utility (quality of report) as output for each auditor. 
 
 ![Theoretical utility function for reward distribution](utility_function.svg)
 
-The greater reward an auditor receives, the more efforts are going to be put in producing high quality submissions **up until a certain point**. Indeed, too much rewards will incentivize the production of *more* reports (hence less effort on each of them) and an overall **decrease** in the utility (quality) of submissions. 
+The greater reward an auditor receives, the more efforts are going to be put in producing high quality submissions **up until a certain point**. Indeed, too much rewards will incentivize the production of *more* reports (hence less effort on each of them) and an overall **decrease** in the utility (quality) of submissions.
 
-#### References
-1. [Maag, S., Alexander, T. J., Kase, R., & Hoffmann, S. (2018, November). Indicators for measuring the contributions of individual knowledge brokers. Environmental Science & Policy, 89, 1–9.](https://doi.org/10.1016/j.envsci.2018.06.002)
-2. [Wikipedia contributors. (2022, March 3). Fair division. Wikipedia. Retrieved September 24, 2022](https://en.wikipedia.org/wiki/Fair_division)
-3. [Wikipedia contributors. (2021b, December 27). Fair division of a single homogeneous resource. Wikipedia. Retrieved September 24, 2022](https://en.wikipedia.org/wiki/Fair_division_of_a_single_homogeneous_resource)
-4. [Moulin, H. (2004, August 20). Fair Division and Collective Welfare (The MIT Press) (New Ed). The MIT Press.](https://www.google.ca/books/edition/Fair_Division_and_Collective_Welfare/kjoiEAAAQBAJ)
+*(5.1) “dual” surplus-sharing problems where each agent contributes some productive input and the question is to share the resulting total output [[17]](#user-content-#17)*
 
 ### Security aspect
-*Who would benefit from it ?*
-
-- **EOS developers** getting relieved of the need to review the code themselves and get better insights into how to build secure applications.
-- **Auditors** for getting a chance to contribute efforts on collaborative community audit request and receive financial compensation.
-- **Users** for feeling much safer in investing funds or simply interacting with apps in the space.
-
-*What are their requirements ?*
-- **EOS developers** (*cost-effectiveness, support, value through skilled auditors*)
-- **Auditors** (*worthy of time, non-toxic environnement, sense of community, scaling to skill level*)
-- **Users** (*transparency, provable work, possibility of rewarding auditors maybe*)
-
 *Liability, disclosure agreements ?*
 
 \[*Need to dig further into this topic*\]
@@ -277,7 +259,7 @@ If the team does not wish to open source their code, they could always turn to o
 
 The report produced at the end of the audit process would serve as the validation and legitimacy of the audit. The scope and hashes of the contracts audited would be provided in the report along with all the findings details. A hash would also be provided to identify the specific audit. 
 
-## Technical specifications
+## Technical considerations
 This section goes deeper into the technical aspect of running the DAO (platforms, backend, frontend, etc.).
 
 ### Github as a supporting platform
@@ -293,3 +275,22 @@ The goal would be to integrate this platform to the existing [Pomelo](https://po
 DAOS would be it's own web platform and it would be using Pomelo Bounties for the backend and smart contract capabilities.
 
 The Pomelo platform would also provide funds for setting up the audit bounty. Additionnaly, teams who are requesting an audit could pay a certain fee for sending their request to the DAO.
+
+## References
+1. [Top EOS Dapps. (n.d.). DappRadar. Retrieved September 14, 2022](https://dappradar.com/rankings/protocol/eos)<a name="#1"></a>
+2. [Fastest EOS Block Explorer and Wallet. (n.d.). Retrieved September 14, 2022](https://bloks.io/#statistics)<a name="#2"></a>
+3. [Build software better, together. (n.d.). GitHub. Retrieved September 14, 2022](https://github.com/topics/)<a name="#3"></a>
+4. [Sephton, C. (n.d.). Ethereum price today, ETH to USD live, marketcap and chart. CoinMarketCap. Retrieved September 14, 2022](https://coinmarketcap.com/currencies/ethereum/)<a name="#4"></a>
+5. [Ethereum (ETH) Blockchain Metrics & Charts. (n.d.). Staking Rewards. Retrieved September 14, 2022](https://www.stakingrewards.com/earn/ethereum-2-0/metrics/)<a name="#5"></a>
+6. [Ningyu He, Haoyu Wang, Lei Wu, Xiapu Luo, Yao Guo, and Xiangqun Chen. 2022. A Survey on EOSIO Systems Security: Vulnerability, Attack, and Mitigation. 1, 1 (July 2022), 34 pages.](https://doi.org/10.1145/nnnnnnn.nnnnnnn)<a name="#6"></a>
+7. [He, N., Zhang, R., Wu, L., Wang, H., Luo, X., Guo, Y., ... & Jiang, X. (2020). Security analysis of EOSIO smart contracts. arXiv preprint arXiv:2003.06568.](https://www.usenix.org/system/files/sec21fall-he-ningyu.pdf)<a name="#7"></a>
+8. [HACK3D: The Web3 Security Quarterly Report - Q1 2022 - Blog - CertiK Security Leaderboard. (n.d.). Retrieved September 15, 2022](https://4972390.fs1.hubspotusercontent-na1.net/hubfs/4972390/Marketing/Web3%20Security%20Q1%202022.pdf)<a name="#8"></a>
+9. [HACK3D: The Web3 Security Quarterly Report - Q2 2022 - Blog - CertiK Security Leaderboard. (n.d.). Retrieved September 15, 2022](https://4972390.fs1.hubspotusercontent-na1.net/hubfs/4972390/Marketing/Web3%20Security%20Q2-2022-v4.pdf)<a name="#9"></a>
+10. [Ethereum Smart Contracts Creation. (n.d.). Retrieved September 15, 2022](https://dune.com/queries/649454/1207174)<a name="#10"></a>
+11. [Moving beyond coin voting governance. (2021, August 16). Retrieved September 21, 2022](https://vitalik.ca/general/2021/08/16/voting3.html)<a name="#11"></a>
+12. [Levi, A. (2021, December 9). Reputation vs Tokens - DAOstack. Medium. Retrieved September 23, 2022](https://medium.com/daostack/reputation-vs-tokens-6d7642c7a538)<a name="#12"></a>
+13. [Buterin, V. (2014, May 6). DAOs, DACs, DAs and More: An Incomplete Terminology Guide. Ethereum Foundation Blog. Retrieved September 21, 2022](https://blog.ethereum.org/2014/05/06/daos-dacs-das-and-more-an-incomplete-terminology-guide)<a name="#13"></a>
+14. [Maag, S., Alexander, T. J., Kase, R., & Hoffmann, S. (2018, November). Indicators for measuring the contributions of individual knowledge brokers. Environmental Science & Policy, 89, 1–9.](https://doi.org/10.1016/j.envsci.2018.06.002)<a name="#14"></a>
+15. [Wikipedia contributors. (2022, March 3). Fair division. Wikipedia. Retrieved September 24, 2022](https://en.wikipedia.org/wiki/Fair_division)<a name="#15"></a>
+16. [Wikipedia contributors. (2021, December 27). Fair division of a single homogeneous resource. Wikipedia. Retrieved September 24, 2022](https://en.wikipedia.org/wiki/Fair_division_of_a_single_homogeneous_resource)<a name="#16"></a>
+17. [Moulin, H. (2004, August 20). Fair Division and Collective Welfare (The MIT Press) (New Ed). The MIT Press.](https://www.google.ca/books/edition/Fair_Division_and_Collective_Welfare/kjoiEAAAQBAJ)<a name="#17"></a>
