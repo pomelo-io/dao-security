@@ -20,6 +20,9 @@
   * [Reward systems](#reward-systems)
     + [Assessing the quality of submissions](#assessing-the-quality-of-submissions)
     + [Mathematical approach for the distribution of rewards](#mathematical-approach-for-the-distribution-of-rewards)
+      - [Using a utility function](#using-a-utility-function)
+      - [Voting over reward sharing methods](#voting-over-reward-sharing-methods)
+      - [wip](#wip)
   * [Security aspect](#security-aspect)
 - [Technical considerations](#technical-considerations)
   * [Github as a supporting platform](#github-as-a-supporting-platform)
@@ -195,12 +198,20 @@ Decisions requiring judgment such as resolving conflicts or approving a client's
 
 The process of eliminating operators from the system could be the long-term goal of the DAO governance, ensuring that community members working for the best of the organization would be the one that have the most influence on the decisions taken (which should be the case for operators but there is a higher risk of collusion with such a small group of people).
 
-*Add section about "4.3 Voting over Resource Allocation" and scoring methods in [[17]](#user-content-#17)*
-
 #### Additional considerations
-According to [[13]](#user-content-#13), one of the main components that differentiates a **D**ecentralized **A**utonomous **O**rganisation (DAO) from just a **D**ecentralized **A**pplication (DA) is *internal capital*. For DAOS, that would be the treasury used to reward auditors (and potentially others) for their work. Hence, mechanisms (such as multi-sig and more) need to be put in place for ensuring the safety and integrity of this internal capital or else the entire DAO structure would be at risk.
+According to Vitalik Buterin [[13]](#user-content-#13), one of the main components that differentiates a **D**ecentralized **A**utonomous **O**rganisation (DAO) from just a **D**ecentralized **A**pplication (DA) is *internal capital*. For DAOS, that would be the treasury used to reward auditors (and potentially others) for their work. Hence, mechanisms (such as multi-sig and more) need to be put in place for ensuring the safety and integrity of this internal capital or else the entire DAO structure would be at risk.
 
 The word *Autonomous* is also a key part that caracterize a DAO as opposed to a simpler **D**ecentralized **O**rganisation (DO). There need to be some part of the system that is not prone to human decisions only, running the risk of collusion or malicious exploits of the DAO structure. Rules are one way of enforcing more autonomous evaluations, with invalid or fraudulent submissions/reports exposed to being flagged and rejected (either automatically or manually).
+
+Vitalik also doubles down on the *decentralization* aspect in [[18]](#user-content-#18), challenging the belief that, over time, decentralized organisations will tend to be closer and closer to the structure of a traditional corporation (CEO, board of directors, etc.) for the sake of efficiency. It's interesting to note that one of his argument (*"Centralization is convex, decentralization is concave"*) resembles in many aspect the mathematical solutions to voting-based games described in [[17]](#user-content-#17). 
+
+Indeed, Hervé Moulin proves that when voters presents a *single-peaked preference* when facing multiple choices, the majority voting will always be successful **and** *strategy-proof* meaning that no voter (or group of voters) has an incentive to lie about its peak preference. This is not the case when dealing with scoring methods asking voters to rank candidates (or outcomes) for attributing a score based on the ranking (with the highest scoring choice being chosen). 
+
+What that means for DAOS is that governance decisions should aim to be concave decisions:
+- If the outcomes can be arranged in a natural order (like length of time for running a contest), have them being ranked or at least pick a "best choice" from an voter's perspective. Falling into the category of *single-peak preference*, the **mean** of these choices would be considered the majority choice.
+- Else if voters can't select a "best choice", use the configuration of *intermediate preferences* (4.5 in [[17]](#user-content-#17)) for ordering the voters instead of the outcomes. The order follows the property that *whenever two agents i, j agree to prefer outcome a to b, so do all agents “between” i and j*. The median agent would then be considered the majority's opinion.
+
+*WIP investigate decentralized arbitration service [Kleros](https://kleros.io/)*
 
 ~~The system should allow for an (*active?*) auditor to raise questions of interest to the community and/or make voting proposals.~~
 
@@ -223,7 +234,7 @@ In any case, the client would also be involved in this process being able to rec
 
 The judging process being mostly subjective, in case be useful to offer some general direction and references for assisting judges in their assessments. Objective metrics can be effective for a quick first sort of submissions' quality. But finding good metrics for measuring work effort can be tricky. A few options are presented here (based on [[14]](#user-content-#14)): 
 - Resources spent: time, reports length and details
-- Attributable results: number of valid findings, criticity, CPU/RAM optimization for EOS smart contracts
+- Attributable results: number of valid findings, criticity, CPU/RAM gains from optimization (for EOS smart contracts)
 
 #### Mathematical approach for the distribution of rewards
 The litterature has been quite prolific since the 1940's towards creating and solving *fair division [[15]](#user-content-#15)* problems using game theory models. Of particular interest to the DAOS project is the subject of *fair division of a single homogeneous resource [[16]](#user-content-#16)* (where only the amount matters... like money!), the concepts of *welfarism*, *social welfare orderings* and "*the problem of the commons*" among others [[17]](#user-content-#17). They offer great insights towards creating a fair reward distribution system in the context of subjective evaluations.
@@ -232,11 +243,29 @@ The litterature has been quite prolific since the 1940's towards creating and so
 
 Given a **set** of contributions (described with their own *criticity level*, *properties* – like length and details – and *subjective quality*) for each participants, how can the **common resource** (money) be allocated in a fair way, rewarding the **maximum utility** (quality) as perceived by the client ?
 
-The main goal would be to shape a concave *utility function* with money as input and the utility (quality of report) as output for each auditor. 
+A few possibilities are exposed in more details below.
+
+##### Using a utility function
+The main goal would be to shape a concave *utility function* with money as input and the utility (quality of report) as output for each auditor. That way, rewards could be distributed according to the peak utility of each individual.
 
 ![Theoretical utility function for reward distribution](utility_function.svg)
 
 The greater reward an auditor receives, the more efforts are going to be put in producing high quality submissions **up until a certain point**. Indeed, too much rewards will incentivize the production of *more* reports (hence less effort on each of them) and an overall **decrease** in the utility (quality) of submissions.
+
+The design of this utility function would be rather complex as it needs to take a lot of parameters into account (similar to the ones used for judging submissions) and most notably the **reward incentive** for each particular auditor. Data could be aggregated from past submissions if a "quality score" is provided and a correlation between this "quality score" and rewards could serve as the basis for such a utility function.
+
+##### Voting over reward sharing methods
+This method (taken from [[17]](#user-content-#17)) is mainly exposed to bring awareness about a possible voting system for the distribution of rewards.
+
+1. Attribute a claim amount for each auditor (like [Code4rena's](#code4rena) system or based on a "quality score" for submissions).
+2. Make them choose their preferred surplus-sharing method according to the outcome (or just pick the one with the highest reward for them).
+3. Select the sharing method that is at the median of the single-peak preferences. 
+
+![Reward divison voting](reward_division_voting.png)
+
+This system is not really applicable in DAOS' case since the "claims" are directly correlated to the quality and amount of effort an auditor has produced. Hence, a majority of low quality submissions would overtake the few excellent reports (which is the most common scenario in [Code4rena's](#code4rena) case) and select the *equal surplus* (ES) or worse the *uniform gains* (UG) method. This system would be unfair to the best elements of the community. 
+
+##### wip
 
 *(5.1) “dual” surplus-sharing problems where each agent contributes some productive input and the question is to share the resulting total output [[17]](#user-content-#17)*
 
@@ -294,3 +323,4 @@ The Pomelo platform would also provide funds for setting up the audit bounty. Ad
 15. [Wikipedia contributors. (2022, March 3). Fair division. Wikipedia. Retrieved September 24, 2022](https://en.wikipedia.org/wiki/Fair_division)<a name="#15"></a>
 16. [Wikipedia contributors. (2021, December 27). Fair division of a single homogeneous resource. Wikipedia. Retrieved September 24, 2022](https://en.wikipedia.org/wiki/Fair_division_of_a_single_homogeneous_resource)<a name="#16"></a>
 17. [Moulin, H. (2004, August 20). Fair Division and Collective Welfare (The MIT Press) (New Ed). The MIT Press.](https://www.google.ca/books/edition/Fair_Division_and_Collective_Welfare/kjoiEAAAQBAJ)<a name="#17"></a>
+18. [DAOs are not corporations: where decentralization in autonomous organizations matters. (2022, September 20). Retrieved September 28, 2022](https://vitalik.ca/general/2022/09/20/daos.html)<a name="#18"></a>
