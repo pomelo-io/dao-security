@@ -282,8 +282,13 @@ The greater reward an auditor receives, the more efforts are going to be put in 
 
 The design of this utility function would be rather complex as it needs to take a lot of parameters into account (similar to the ones used for judging submissions) and most notably the **reward incentive** for each particular auditor. Data could be aggregated from past submissions if a "quality score" is provided and a correlation between this "quality score" and rewards could serve as the basis for such a utility function.
 
-- *salary-like approach: give auditors a fixed reward for each contest and then use proportional-dist for adjusting salary => CAN'T SHAPE CURVE but gives a single-peak preference*
-- *building curve implies to give more rewards for a lesser quality work to an auditor => less value for client*
+Using this method could also allow for a "salary-like" approach for rewarding auditors: by giving them a fixed reward for each contest, auditors can be expected to deliver the maximum utility as described by the curve. To draw the curve, a rate based on the auditor seniority (time spent on audits) and performance would be applied and increase the fixed amount for every audit. Correlating this with the quality delivered in the end allows for finding the single-peak in the utility function (*proof?*). These peaks will then be used to distribute rewards accordingly. As there is only so much prize money available, the goal is to get the closest to it as possible for each auditor.
+
+However, using a curved shape utility function would also imply potentially giving more reward to an auditor for a lower quality work (right-side of the peak). This obviously gives less value for the client. A possible solution would be to adjust the fixed amount depending on the performance of the auditor for an audit (move the given amount to the left/right if under/overperforming, see chart below). This solution stills satisfies the single-peak preference requirement while also preventing spending more reward on lesser quality work. 
+
+![Line adjusted reward](line_adjusted_reward.svg)
+
+A major inconvenient of this method is the lack of flexibility. If an auditor scores poorly in an audit for some reason (personal problems, harsh judging, etc.), the reward would be inevitably slashed and will require much effort to get back up the curve. Whereas in the previous case, only the rate would be adjusted (albeit possible to be negative **for the next audit**).
 
 ##### Voting over reward sharing methods
 This method (taken from [[17]](#user-content-#17)) is mainly exposed here to bring awareness about a possible voting system for the distribution of rewards.
