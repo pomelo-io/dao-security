@@ -250,7 +250,7 @@ Although it's normal and pretty common to have duplicates, if we suppose that au
 Below is a chart showing what's happening to [Code4rena](#code4rena) in the last few months as more and more people are joining. A bulk of the submissions are coming from newcomers submitting low-level findings that accounts for a larger and larger proportion of the prize pool. Even though they reduced the ratio of duplicate findings (they require that all low-level findings be submitted as a **unique** report), the sheer number of them just tears through the prize money allocation (around ~70% to duplicates in the last 6 months although that also includes higher quality findings).
 
 *Duplicate findings charts*
-![Duplicate findings stats extracted from Code4rena](duplicate_findings.png)
+![Duplicate findings stats extracted from Code4rena](duplicate_findings.jpg)
 
 *Findings distribution chart ranked by severity (highest to lowest, top-bottom)*
 ![Findings distribution chart extracted from Code4rena](findings_distribution.png)
