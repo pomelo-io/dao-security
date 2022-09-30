@@ -12,6 +12,7 @@
 - [Design and architecture discussion](#design-and-architecture-discussion)
   * [Overview](#overview)
   * [Audit process](#audit-process)
+    + [Flow summary](#flow-summary)
   * [Governance systems](#governance-systems)
     + [Bipartite system (operators/community)](#bipartite-system--operators-community-)
     + [Tripartite system (operators/judges/community)](#tripartite-system--operators-judges-community-)
@@ -19,6 +20,7 @@
     + [Additional considerations](#additional-considerations)
   * [Reward systems](#reward-systems)
     + [Assessing the quality of submissions](#assessing-the-quality-of-submissions)
+    + [Duplicate findings](#duplicate-findings)
     + [Mathematical approach for the distribution of rewards](#mathematical-approach-for-the-distribution-of-rewards)
       - [Using a utility function](#using-a-utility-function)
       - [Voting over reward sharing methods](#voting-over-reward-sharing-methods)
@@ -154,9 +156,13 @@ Code audit definition: *A software code audit is a comprehensive analysis of sou
 
 The purpose of auditing a smart contract is to eliminate as much as possible the risks of exploits and unexpected behavior that can occur from errors or overlooked issues in the code. The journey of translating a promising idea into code that runs on a public blockchain can be tedious with lots of pitfalls that developers and newcomers may not be aware of. That's why having a dozen or more pair of eyes look through every aspect of the code is useful for making dapps a safer place for users.
 
-Clients are the ones who defines the **scope** of the audit by providing as much resources as they want (code, documentation, etc.). The DAO will be responsible for assessing the feasibility of the audit according to its own resources (available people, time, other audits, etc.). Clients are expected to supply a sufficient amount of context and documentation for the codebase they want to be audited.
+Clients are the ones who defines the **scope** of the audit by providing as much resources as they want (code, documentation, etc.). The DAO will be responsible for assessing the feasibility of the audit according to its own resources (available people, time, other audits, etc.). Clients are expected to supply a sufficient amount of context and documentation for the codebase they want to be audited. They also provide the funds in advance who shall be putted in escrow until the audit is finished and from which the rewards will be taken for the participating auditors.
 
 Auditors will be provided the material, *potential reward amount?* and a **deadline** for which they have to send in all their work. They are aware of the **rules** (*WIP to be defined / accepted on join, audit start or submission?*) regarding audit submissions and the internal workings of the DAO (reward attribution, etc.). A communication channel (*direct? through DAO?*) shall be at the disposition of auditors for reaching the clients regarding any clarifications they may seek in order to perform the audit work.
+
+After the deadline is passed, no other submissions can be sent and the judging process starts (see [Governance systems](#governance-systems) and [Assessing the quality of submissions](#assessing-the-quality-of-submissions) for an overview of possible methods). The main goal is to reward the best performing auditors by granting them a larger share of the audit funds. Once all the findings have been validated (or invalidated for some) and a reward distribution has been acted, the funds are released from the escrow. DAOS gets a share of the prize pool and uses it to reward the active members who will setup the next audit. An audit report, compilation of all the relevant findings, is also posted to the public at the end.
+
+#### Flow summary
 
 \[*Draft flow based on Denis' feedback*\]
 1. Project/Protocol/Team needs an audit.
@@ -208,7 +214,7 @@ Vitalik also doubles down on the *decentralization* aspect in [[18]](#user-conte
 Indeed, Hervé Moulin proves that when voters presents a *single-peaked preference* when facing multiple choices, the majority voting will always be successful **and** *strategy-proof* meaning that no voter (or group of voters) has an incentive to lie about its peak preference. This is not the case when dealing with scoring methods asking voters to rank candidates (or outcomes) for attributing a score based on the ranking (with the highest scoring choice being chosen). 
 
 What that means for DAOS is that governance decisions should aim to be concave decisions:
-- If the outcomes can be arranged in a natural order (like length of time for running a contest), have them being ranked or at least pick a "best choice" from an voter's perspective. Falling into the category of *single-peak preference*, the **mean** of these choices would be considered the majority choice.
+- If the outcomes can be arranged in a natural order (like length of time for running a contest), have them being ranked or at least pick a "best choice" from a voter's perspective. Falling into the category of *single-peak preference*, the **mean** of these choices would be considered the majority choice.
 - Else if voters can't select a "best choice", use the configuration of *intermediate preferences* (4.5 in [[17]](#user-content-#17)) for ordering the voters instead of the outcomes. The order follows the property that *whenever two agents i, j agree to prefer outcome a to b, so do all agents “between” i and j*. The median agent would then be considered the majority's opinion.
 
 *WIP investigate decentralized arbitration service [Kleros](https://kleros.io/)*
@@ -236,6 +242,28 @@ The judging process being mostly subjective, in case be useful to offer some gen
 - Resources spent: time, reports length and details
 - Attributable results: number of valid findings, criticity, CPU/RAM gains from optimization (for EOS smart contracts)
 
+#### Duplicate findings
+Due to the nature of the decentralized process, it's natural that some submissions will overlap between auditors (called duplicates findings). These types of submissions are worthless and needs to be eliminated as much as possible: a duplicate finding gives less value to the auditors who found it as they will have to split the reward between them (or not if all is given to the first one, discussed below) **and** is also gives less value to clients as they lose on resources (time/money)that could be spent to find other vulnerabilities.
+
+Although it's normal and pretty common to have duplicates, if we suppose that auditors don't communicate with each other, it's important to keep the ratio to a minimum. The crucial point should be to allocate as much money as possible towards **unique** findings. Duplicates (especially low quality ones) are just eating money out of the prize pool.
+
+Below is a chart showing what's happening to [Code4rena](#code4rena) in the last few months as more and more people are joining. A bulk of the submissions are coming from newcomers submitting low-level findings that accounts for a larger and larger proportion of the prize pool. Even though they reduced the ratio of duplicate findings (they require that all low-level findings be submitted as a **unique** report), the sheer number of them just tears through the prize money allocation (around ~70% to duplicates in the last 6 months although that also includes higher quality findings).
+
+*Duplicate findings charts*
+![Duplicate findings stats extracted from Code4rena](duplicate_findings.png)
+
+*Findings distribution chart ranked by severity (highest to lowest, top-bottom)*
+![Findings distribution chart extracted from Code4rena](findings_distribution.png)
+
+To solve this, three possible approaches can be considered for dealing with a duplicate finding:
+1. The reward is splitted equally among the auditors who found it (Code4rena's approach). This implies a simpler process as auditors don't have to be aware of what others have found and simply hope that they're sending unique findings.
+2. The reward is proportionnaly divided according to the timing of the submission (first one to report gets more and so on). This adds a time pressure to auditors which can have a negative effect (also depending on the individuals) in terms of quality of the submissions. Auditors might rush for sending submissions first and not take the time to provide sufficient details.
+3. The full reward is given to the first auditor who finds it and duplicates gets no reward at all. This requires the process to be open (see below) as it would be unfair for auditors to spend their time on a vulnerabilty, only for it to not be awarded.
+
+It should be noted that the first two methods incentivize auditors to not disclose their findings during an audit as it would significantly impact their share of the rewards. It also makes them aim for unique (and thus of a higher criticity level) findings.
+
+For all these cases, the process could be considered closed (meaning auditors don't know who sent what and at what time) or open. A closed process makes sense for the first option as the auditors don't need to care about what others are sending in an equal distribution system. However, it significantly impacts the other two as auditor can't choose to reallocate their time if they don't have the information that someone else found it first (and it would even be unfair in the case of 3.). An open process would allow that flexibility at the cost of additional pressure and/or time spending in looking for the latest advances in the audit.  
+
 #### Mathematical approach for the distribution of rewards
 The litterature has been quite prolific since the 1940's towards creating and solving *fair division [[15]](#user-content-#15)* problems using game theory models. Of particular interest to the DAOS project is the subject of *fair division of a single homogeneous resource [[16]](#user-content-#16)* (where only the amount matters... like money!), the concepts of *welfarism*, *social welfare orderings* and "*the problem of the commons*" among others [[17]](#user-content-#17). They offer great insights towards creating a fair reward distribution system in the context of subjective evaluations.
 
@@ -254,8 +282,11 @@ The greater reward an auditor receives, the more efforts are going to be put in 
 
 The design of this utility function would be rather complex as it needs to take a lot of parameters into account (similar to the ones used for judging submissions) and most notably the **reward incentive** for each particular auditor. Data could be aggregated from past submissions if a "quality score" is provided and a correlation between this "quality score" and rewards could serve as the basis for such a utility function.
 
+- *salary-like approach: give auditors a fixed reward for each contest and then use proportional-dist for adjusting salary => CAN'T SHAPE CURVE but gives a single-peak preference*
+- *building curve implies to give more rewards for a lesser quality work to an auditor => less value for client*
+
 ##### Voting over reward sharing methods
-This method (taken from [[17]](#user-content-#17)) is mainly exposed to bring awareness about a possible voting system for the distribution of rewards.
+This method (taken from [[17]](#user-content-#17)) is mainly exposed here to bring awareness about a possible voting system for the distribution of rewards.
 
 1. Attribute a claim amount for each auditor (like [Code4rena's](#code4rena) system or based on a "quality score" for submissions).
 2. Make them choose their preferred surplus-sharing method according to the outcome (or just pick the one with the highest reward for them).
@@ -263,7 +294,7 @@ This method (taken from [[17]](#user-content-#17)) is mainly exposed to bring aw
 
 ![Reward divison voting](reward_division_voting.png)
 
-This system is not really applicable in DAOS' case since the "claims" are directly correlated to the quality and amount of effort an auditor has produced. Hence, a majority of low quality submissions would overtake the few excellent reports (which is the most common scenario in [Code4rena's](#code4rena) case) and select the *equal surplus* (ES) or worse the *uniform gains* (UG) method. This system would be unfair to the best elements of the community. 
+This system is not really applicable to DAOS since the "claims" are directly correlated to the quality and amount of effort an auditor has produced. Hence, a majority of low quality submissions would overtake the few excellent reports (which is the most common scenario in [Code4rena's](#code4rena) case) and select the *equal surplus* (ES) or worse the *uniform gains* (UG) method. This system would be unfair to the best elements of the community. 
 
 ##### wip
 
