@@ -249,11 +249,11 @@ Although it's normal and pretty common to have duplicates, if we suppose that au
 
 Below is a chart showing what's happening to [Code4rena](#code4rena) in the last few months as more and more people are joining. A bulk of the submissions are coming from newcomers submitting low-level findings that accounts for a larger and larger proportion of the prize pool. Even though they reduced the ratio of duplicate findings (they require that all low-level findings be submitted as a **unique** report), the sheer number of them just tears through the prize money allocation (around ~70% to duplicates in the last 6 months although that also includes higher quality findings).
 
-*Duplicate findings charts*
+*Duplicate findings stats extracted from Code4rena*
 ![Duplicate findings stats extracted from Code4rena](duplicate_findings.jpg)
 
-*Findings distribution chart ranked by severity (highest to lowest, top-bottom)*
-![Findings distribution chart extracted from Code4rena](findings_distribution.png)
+*Findings distribution chart ranked by severity extracted from Code4rena (highest to lowest, top-bottom)*
+![Findings distribution chart ranked by severity extracted from Code4rena](findings_distribution.png)
 
 To solve this, three possible approaches can be considered for dealing with a duplicate finding:
 1. The reward is splitted equally among the auditors who found it (Code4rena's approach). This implies a simpler process as auditors don't have to be aware of what others have found and simply hope that they're sending unique findings.
@@ -262,7 +262,7 @@ To solve this, three possible approaches can be considered for dealing with a du
 
 It should be noted that the first two methods incentivize auditors to not disclose their findings during an audit as it would significantly impact their share of the rewards. It also makes them aim for unique (and thus of a higher criticity level) findings.
 
-For all these cases, the process could be considered closed (meaning auditors don't know who sent what and at what time) or open. A closed process makes sense for the first option as the auditors don't need to care about what others are sending in an equal distribution system. However, it significantly impacts the other two as auditor can't choose to reallocate their time if they don't have the information that someone else found it first (and it would even be unfair in the case of 3.). An open process would allow that flexibility at the cost of additional pressure and/or time spending in looking for the latest advances in the audit.  
+For all these cases, the process could be considered closed (meaning auditors don't know who sent what and at what time) or open. A closed process makes sense for the first option as the auditors don't need to care about what others are sending in an equal distribution system. However, it would significantly impacts the other two options as auditor wont be able to choose how to reallocate their time if they don't have the information that someone else found what their working on first (and it would even be unfair in the case of 3.). An open process would allow that flexibility at the cost of additional pressure and/or time spending in looking for the latest advances in the audit.  
 
 #### Mathematical approach for the distribution of rewards
 The litterature has been quite prolific since the 1940's towards creating and solving *fair division [[15]](#user-content-#15)* problems using game theory models. Of particular interest to the DAOS project is the subject of *fair division of a single homogeneous resource [[16]](#user-content-#16)* (where only the amount matters... like money!), the concepts of *welfarism*, *social welfare orderings* and "*the problem of the commons*" among others [[17]](#user-content-#17). They offer great insights towards creating a fair reward distribution system in the context of subjective evaluations.
