@@ -204,6 +204,8 @@ Decisions requiring judgment such as resolving conflicts or approving a client's
 
 The process of eliminating operators from the system could be the long-term goal of the DAO governance, ensuring that community members working for the best of the organization would be the one that have the most influence on the decisions taken (which should be the case for operators but there is a higher risk of collusion with such a small group of people).
 
+*WIP investigate decentralized arbitration service [Kleros](https://kleros.io/)*
+
 #### Additional considerations
 According to Vitalik Buterin [[13]](#user-content-#13), one of the main components that differentiates a **D**ecentralized **A**utonomous **O**rganisation (DAO) from just a **D**ecentralized **A**pplication (DA) is *internal capital*. For DAOS, that would be the treasury used to reward auditors (and potentially others) for their work. Hence, mechanisms (such as multi-sig and more) need to be put in place for ensuring the safety and integrity of this internal capital or else the entire DAO structure would be at risk.
 
@@ -216,8 +218,6 @@ Indeed, Hervé Moulin proves that when voters presents a *single-peaked preferen
 What that means for DAOS is that governance decisions should aim to be concave decisions:
 - If the outcomes can be arranged in a natural order (like length of time for running a contest), have them being ranked or at least pick a "best choice" from a voter's perspective. Falling into the category of *single-peak preference*, the **mean** of these choices would be considered the majority choice.
 - Else if voters can't select a "best choice", use the configuration of *intermediate preferences* (4.5 in [[17]](#user-content-#17)) for ordering the voters instead of the outcomes. The order follows the property that *whenever two agents i, j agree to prefer outcome a to b, so do all agents “between” i and j*. The median agent would then be considered the majority's opinion.
-
-*WIP investigate decentralized arbitration service [Kleros](https://kleros.io/)*
 
 ~~The system should allow for an (*active?*) auditor to raise questions of interest to the community and/or make voting proposals.~~
 
@@ -243,7 +243,7 @@ The judging process being mostly subjective, in case be useful to offer some gen
 - Attributable results: number of valid findings, criticity, CPU/RAM gains from optimization (for EOS smart contracts)
 
 #### Duplicate findings
-Due to the nature of the decentralized process, it's natural that some submissions will overlap between auditors (called duplicates findings). These types of submissions are worthless and needs to be eliminated as much as possible: a duplicate finding gives less value to the auditors who found it as they will have to split the reward between them (or not if all is given to the first one, discussed below) **and** is also gives less value to clients as they lose on resources (time/money)that could be spent to find other vulnerabilities.
+Due to the nature of the decentralized process, it's natural that some submissions will overlap between auditors (called duplicates findings). These types of submissions are worthless and needs to be eliminated as much as possible: a duplicate finding gives less value to the auditors who found it as they will have to split the reward between them (or not if all is given to the first one, discussed below) **and** it also gives less value to clients as they lose on resources (time/money) that could be spent to find other vulnerabilities.
 
 Although it's normal and pretty common to have duplicates, if we suppose that auditors don't communicate with each other, it's important to keep the ratio to a minimum. The crucial point should be to allocate as much money as possible towards **unique** findings. Duplicates (especially low quality ones) are just eating money out of the prize pool.
 
@@ -293,13 +293,14 @@ A major inconvenient of this method is the lack of flexibility. If an auditor sc
 ##### Voting over reward sharing methods
 This method (taken from [[17]](#user-content-#17)) is mainly exposed here to bring awareness about a possible voting system for the distribution of rewards.
 
+It works like the following:
 1. Attribute a claim amount for each auditor (like [Code4rena's](#code4rena) system or based on a "quality score" for submissions).
 2. Make them choose their preferred surplus-sharing method according to the outcome (or just pick the one with the highest reward for them).
 3. Select the sharing method that is at the median of the single-peak preferences. 
 
 ![Reward divison voting](reward_division_voting.png)
 
-This system is not really applicable to DAOS since the "claims" are directly correlated to the quality and amount of effort an auditor has produced. Hence, a majority of low quality submissions would overtake the few excellent reports (which is the most common scenario in [Code4rena's](#code4rena) case) and select the *equal surplus* (ES) or worse the *uniform gains* (UG) method. This system would be unfair to the best elements of the community. 
+This system is not really applicable to DAOS since the "claims" are directly correlated to the quality and amount of effort an auditor has produced. Hence, a majority of low quality submissions would overtake the few excellent reports (which is the most common scenario in [Code4rena's](#code4rena) case) and select the *equal surplus* (ES) or worse the *uniform gains* (UG) method (a system unfair to the best elements of the community). 
 
 ##### wip
 
