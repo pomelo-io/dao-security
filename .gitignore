@@ -1,2 +1,3 @@
 # Sublime Text workspace configuration files
 *.sublime*
+*.ipynb_*/

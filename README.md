@@ -24,7 +24,7 @@
     + [Mathematical approach for the distribution of rewards](#mathematical-approach-for-the-distribution-of-rewards)
       - [Using a utility function](#using-a-utility-function)
       - [Voting over reward sharing methods](#voting-over-reward-sharing-methods)
-      - [wip](#wip)
+      - [Reward sharing solution from the problem of the commons](#reward-sharing-solution-from-the-problem-of-the-commons)
   * [Security aspect](#security-aspect)
 - [Technical considerations](#technical-considerations)
   * [Github as a supporting platform](#github-as-a-supporting-platform)
@@ -217,7 +217,7 @@ Indeed, Hervé Moulin proves that when voters presents a *single-peaked preferen
 
 What that means for DAOS is that governance decisions should aim to be concave decisions:
 - If the outcomes can be arranged in a natural order (like length of time for running a contest), have them being ranked or at least pick a "best choice" from a voter's perspective. Falling into the category of *single-peak preference*, the **mean** of these choices would be considered the majority choice.
-- Else if voters can't select a "best choice", use the configuration of *intermediate preferences* (4.5 in [[17]](#user-content-#17)) for ordering the voters instead of the outcomes. The order follows the property that *whenever two agents i, j agree to prefer outcome a to b, so do all agents “between” i and j*. The median agent would then be considered the majority's opinion.
+- Else if voters are more likely to vote selfishly given the outcomes (like for example when deciding on a new reward incentive), use the configuration of *intermediate preferences* (4.5 in [[17]](#user-content-#17)) for ordering the voters instead of the outcomes. The order follows the property that *whenever two agents i, j agree to prefer outcome a to b, so do all agents “between” i and j*. The median agent would then be considered the majority's opinion.
 
 ~~The system should allow for an (*active?*) auditor to raise questions of interest to the community and/or make voting proposals.~~
 
@@ -245,15 +245,15 @@ The judging process being mostly subjective, in case be useful to offer some gen
 #### Duplicate findings
 Due to the nature of the decentralized process, it's natural that some submissions will overlap between auditors (called duplicates findings). These types of submissions are worthless and needs to be eliminated as much as possible: a duplicate finding gives less value to the auditors who found it as they will have to split the reward between them (or not if all is given to the first one, discussed below) **and** it also gives less value to clients as they lose on resources (time/money) that could be spent to find other vulnerabilities.
 
-Although it's normal and pretty common to have duplicates, if we suppose that auditors don't communicate with each other, it's important to keep the ratio to a minimum. The crucial point should be to allocate as much money as possible towards **unique** findings. Duplicates (especially low quality ones) are just eating money out of the prize pool.
+Although it's normal and pretty common to have duplicates (if we suppose that auditors don't communicate with each other) it's important to keep the ratio to a minimum. The crucial point should be to allocate as much money as possible towards **unique** findings. Duplicates (especially low quality ones) are just eating money out of the prize pool.
 
-Below is a chart showing what's happening to [Code4rena](#code4rena) in the last few months as more and more people are joining. A bulk of the submissions are coming from newcomers submitting low-level findings that accounts for a larger and larger proportion of the prize pool. Even though they reduced the ratio of duplicate findings (they require that all low-level findings be submitted as a **unique** report), the sheer number of them just tears through the prize money allocation (around ~70% to duplicates in the last 6 months although that also includes higher quality findings).
+Below is a chart showing what's happening to [Code4rena](#code4rena) in the last few months as more and more people are joining. A bulk of the submissions are coming from newcomers submitting low-level findings that accounts for a larger and larger proportion of the prize pool. Even though Code4rena reduced the ratio of duplicate findings (they now require that all low-level findings be submitted as a **unique** report), the sheer number of them just tears through the prize money allocation (around ~70% to duplicates in the last 6 months although that also includes higher quality findings). They also started to limit the amount of reward given to QA/Gas optimization reports to ~15% of the total prize pool.
 
 *Duplicate findings stats extracted from Code4rena*
-![Duplicate findings stats extracted from Code4rena](duplicate_findings.jpg)
+![Duplicate findings stats extracted from Code4rena](images/duplicate_findings.jpg)
 
 *Findings distribution chart ranked by severity extracted from Code4rena (highest to lowest, top-bottom)*
-![Findings distribution chart ranked by severity extracted from Code4rena](findings_distribution.png)
+![Findings distribution chart ranked by severity extracted from Code4rena](images/findings_distribution.png)
 
 To solve this, three possible approaches can be considered for dealing with a duplicate finding:
 1. The reward is splitted equally among the auditors who found it (Code4rena's approach). This implies a simpler process as auditors don't have to be aware of what others have found and simply hope that they're sending unique findings.
@@ -276,17 +276,17 @@ A few possibilities are exposed in more details below.
 ##### Using a utility function
 The main goal would be to shape a concave *utility function* with money as input and the utility (quality of report) as output for each auditor. That way, rewards could be distributed according to the peak utility of each individual.
 
-![Theoretical utility function for reward distribution](utility_function.svg)
+![Theoretical utility function for reward distribution](images/utility_function.svg)
 
 The greater reward an auditor receives, the more efforts are going to be put in producing high quality submissions **up until a certain point**. Indeed, too much rewards will incentivize the production of *more* reports (hence less effort on each of them) and an overall **decrease** in the utility (quality) of submissions.
 
 The design of this utility function would be rather complex as it needs to take a lot of parameters into account (similar to the ones used for judging submissions) and most notably the **reward incentive** for each particular auditor. Data could be aggregated from past submissions if a "quality score" is provided and a correlation between this "quality score" and rewards could serve as the basis for such a utility function.
 
-Using this method could also allow for a "salary-like" approach for rewarding auditors: by giving them a fixed reward for each contest, auditors can be expected to deliver the maximum utility as described by the curve. To draw the curve, a rate based on the auditor seniority (time spent on audits) and performance would be applied and increase the fixed amount for every audit. Correlating this with the quality delivered in the end allows for finding the single-peak in the utility function (*proof?*). These peaks will then be used to distribute rewards accordingly. As there is only so much prize money available, the goal is to get the closest to it as possible for each auditor.
+Using this method could also allow for a "salary-like" approach for rewarding auditors: by giving them a fixed reward for each contest, auditors can be expected to deliver the maximum utility as described by the curve. To draw the curve, a rate based on the auditor seniority (time spent on audits) and performance would be applied and increase the fixed reward amount for every audit. Correlating this rate with the quality delivered in the end allows for finding the single-peak in the utility function (*proof?*). These peaks will then be used to distribute rewards accordingly. As there is only so much prize money available, the goal is to get the closest to it as possible for each auditor.
 
 However, using a curved shape utility function would also imply potentially giving more reward to an auditor for a lower quality work (right-side of the peak). This obviously gives less value for the client. A possible solution would be to adjust the fixed amount depending on the performance of the auditor for an audit (move the given amount to the left/right if under/overperforming, see chart below). This solution stills satisfies the single-peak preference requirement while also preventing spending more reward on lesser quality work. 
 
-![Line adjusted reward](line_adjusted_reward.svg)
+![Line adjusted reward](images/line_adjusted_reward.svg)
 
 A major inconvenient of this method is the lack of flexibility. If an auditor scores poorly in an audit for some reason (personal problems, harsh judging, etc.), the reward would be inevitably slashed and will require much effort to get back up the curve. Whereas in the previous case, only the rate would be adjusted (albeit possible to be negative **for the next audit**).
 
@@ -298,13 +298,47 @@ It works like the following:
 2. Make them choose their preferred surplus-sharing method according to the outcome (or just pick the one with the highest reward for them).
 3. Select the sharing method that is at the median of the single-peak preferences. 
 
-![Reward divison voting](reward_division_voting.png)
+![Reward divison voting](images/reward_division_voting.png)
 
 This system is not really applicable to DAOS since the "claims" are directly correlated to the quality and amount of effort an auditor has produced. Hence, a majority of low quality submissions would overtake the few excellent reports (which is the most common scenario in [Code4rena's](#code4rena) case) and select the *equal surplus* (ES) or worse the *uniform gains* (UG) method (a system unfair to the best elements of the community). 
 
-##### wip
+##### Reward sharing solution from the problem of the commons
+In (5.1) and (5.2) of [[17]](#user-content-#17), Moulin raises the question of "distributive justice" in the context of sharing the cost of the *common* utilization of a shared technology. The same principles can be applied in a surplus-sharing model (like audit reward distribution!) and produces interesting results detailed here.
 
-*(5.1) “dual” surplus-sharing problems where each agent contributes some productive input and the question is to share the resulting total output [[17]](#user-content-#17)*
+Moulin uses a mail distribution problem for illustrating how a fair cost-sharing solution can be achieved: each village is at a fixed distance from the next and is assigned a cost based on that distance such that the total cost for distributing the mail is $110 (passing by each village up to the furthest and back).
+
+![Mail distribution example figure](images/mail_distribution_figure.png)
+
+The idea is to propagate the accumulated cost from village n-1 to village n according to the increase in distance. The first village would bear 1/5th of the total cost multiplied by its total distance (2\*10 = 20), the second would add to that 1/4th of its total distance from the first (2\*5 = 10) and so on (example results taken from the book below).
+
+![Mail distribution shares result](images/mail_distribution_shares.png)
+
+Now, looking from the perspective of splitting *rewards*, this would mean that, given a **contribution score** (<=> cost) for each auditor, we could rank them from lowest to highest and the distance between one auditor to the next would become the **increase in reward** (<=> increase in cost) proportional to the total number of auditors who participated. Plotted below is a sample distribution from randomly assigned scores (between 1 and 100) with the corresponding share percentage from the prize pool reward that an auditor would get with that score.
+
+![Share percentage of prize pool according to the contribution score](images/sample_capacity_distribution.png)
+
+This looks like a reasonable, fair distribution of rewards with higher scoring contributors getting more and more of the shares of the total prize pool. Looking at the asymptotic behavior also confirms that a large number of low scoring contributions would still score a low share, with a slow increase as the score progresses (see chart below). 
+
+![Asymptotic behavior of the reward distribution system](images/limit_capacity_distribution.png)  
+
+However, there is one oddity in the graph at the 100 top scoring auditor (circled black): a *massive* increase in the reward share, even though the next competitors are only 1 or 2 points behind in score ! This method effectively exacerbates the rewards from the top scorers and every single point (which are still assigned subjectively as described in [previous sections](#assessing-the-quality-of-submissions)) will potentially be worth thousands of dollars depending on the prize pool size.
+
+One solution to fix this behavior would be to give more weight to certain distances: going back to the original mail distribution problem, imagine that we add a third parameter like the number of people living in the villages. Now the cost should also increase based on that additional variable as more time (or distance within the village) is gonna be spent for distributing the mails. That means the closer we get to this village (still from a distance point of view), the bigger the cost will get.
+
+For auditors, we can use this behavior to tune the distribution according to a certain threshold. A way to justify this approach would be to consider these observations:
+- Submissions scoring between 0 and 30 can all be considered low value with major differences being writting/communication quality rather than audit quality.
+- 30 to 50 would be mid-range than necessitates some recognition of the work produced.
+- 50 to 75 is the bulk of submissions with audit quality increase (more findings, higher criticities, etc.).
+- 75 to 90 would be reaching levels of excellence in terms of details and findings descriptions.
+- 90+ are difficult to really differentiate as they all represent immense audit value. Proof-Of-Concepts and test writting are what classify them in the best of the best.
+
+For these reasons, we can finetune the distribution algorithm towards a more "flat S-shaped" that recognize the work produced by each auditor as explained above. The slope and threshold could also be adjusted with insights (data) gathered from the scoring distribution. Depending on the method used (judge, automatic, etc.), some patterns might benefit lower, higher or mid scorers.
+
+![Tuning capacity distribution](images/tuning_capacity_distribution.png) 
+
+And here is the final equation for generating the graph with *R* the reward, *S* the score, *n* the total number of auditors, and *C* the "cutoff" value at which the slope inverts. 
+
+![Equation for tuning capacity graph](images/tuning_capacity_equation.png) 
 
 ### Security aspect
 *Liability, disclosure agreements ?*
